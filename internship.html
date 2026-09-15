@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インターン振り返り - 就活Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>インターン振り返り</h1>
+        <p>インターンで学んだことや感じたことを記録します。</p>
+    </header>
+
+    <a href="index.html">← トップページへ戻る</a>
+
+    <main>
+
+        <section>
+            <h2>振り返りを追加</h2>
+
+            <input type="text" id="internshipCompany" placeholder="企業名を入力">
+
+            <textarea id="internshipContent" placeholder="インターンで学んだこと・感じたことを入力"></textarea>
+
+            <button id="addInternshipButton">保存</button>
+        </section>
+
+        <section>
+            <h2>振り返り一覧</h2>
+
+            <ul id="internshipList"></ul>
+        </section>
+
+    </main>
+<script src="internship.js"></script>
+</body>
+</html>

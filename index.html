@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>就活Manager</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-inner">
+            <h1>就活Manager</h1>
+            <p>自分の就活を、ひとつにまとめる。</p>
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- ダッシュボード -->
+
+        <section class="dashboard">
+
+            <div class="dashboard-title">
+                <h2>就活ダッシュボード</h2>
+                <p>現在の就活状況を確認できます。</p>
+            </div>
+
+
+            <div class="status-grid">
+
+                <div class="status-card">
+                    <span>今日のタスク</span>
+                    <strong id="taskCount">0</strong>
+                    <small>件</small>
+                </div>
+
+
+                <div class="status-card">
+                    <span>登録企業</span>
+                    <strong id="companyCount">0</strong>
+                    <small>社</small>
+                </div>
+
+
+                <div class="status-card">
+                    <span>ES・文章</span>
+                    <strong id="textCount">0</strong>
+                    <small>件</small>
+                </div>
+
+
+                <div class="status-card">
+                    <span>インターン</span>
+                    <strong id="internshipCount">0</strong>
+                    <small>件</small>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- メニュー -->
+
+        <section class="menu-section">
+
+            <div class="dashboard-title">
+                <h2>管理メニュー</h2>
+                <p>就活に必要な情報を管理します。</p>
+            </div>
+
+
+            <div class="menu-grid">
+
+
+                <a href="tasks.html" class="menu-card">
+
+                    <div class="menu-icon">01</div>
+
+                    <div>
+                        <h2>今日のタスク</h2>
+                        <p>ES提出や面接など、今日やることを管理します。</p>
+                    </div>
+
+                </a>
+
+
+                <a href="companies.html" class="menu-card">
+
+                    <div class="menu-icon">02</div>
+
+                    <div>
+                        <h2>企業管理</h2>
+                        <p>気になる企業や選考状況を管理します。</p>
+                    </div>
+
+                </a>
+
+
+                <a href="es.html" class="menu-card">
+
+                    <div class="menu-icon">03</div>
+
+                    <div>
+                        <h2>ES・文章</h2>
+                        <p>ESや自己分析などの文章を保存します。</p>
+                    </div>
+
+                </a>
+
+
+                <a href="internship.html" class="menu-card">
+
+                    <div class="menu-icon">04</div>
+
+                    <div>
+                        <h2>インターン振り返り</h2>
+                        <p>インターンで学んだことや感じたことを記録します。</p>
+                    </div>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="index.js"></script>
+
+</body>
+
+</html>

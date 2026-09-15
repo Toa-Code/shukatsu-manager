@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>企業管理 - 就活Manager</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>企業管理</h1>
+        <p>気になる企業や選考状況を管理します。</p>
+    </header>
+
+
+    <a href="index.html">← トップページへ戻る</a>
+
+
+    <main>
+
+
+        <section>
+
+            <h2>企業を追加</h2>
+
+
+            <input
+                type="text"
+                id="companyInput"
+                placeholder="企業名を入力"
+            >
+
+
+            <select id="companyStatus">
+
+                <option value="気になる">気になる</option>
+
+                <option value="応募予定">応募予定</option>
+
+                <option value="ES提出済み">ES提出済み</option>
+
+                <option value="選考中">選考中</option>
+
+                <option value="最終面接">最終面接</option>
+
+                <option value="内定">内定</option>
+
+                <option value="不合格">不合格</option>
+
+            </select>
+
+
+            <input
+                type="date"
+                id="companyDate"
+            >
+
+
+            <select id="companyPriority">
+
+                <option value="5">★★★★★</option>
+
+                <option value="4">★★★★☆</option>
+
+                <option value="3">★★★☆☆</option>
+
+                <option value="2">★★☆☆☆</option>
+
+                <option value="1">★☆☆☆☆</option>
+
+            </select>
+
+
+            <textarea
+                id="companyMemo"
+                placeholder="企業についてのメモを入力"
+            ></textarea>
+
+
+            <button id="addCompanyButton">
+                ＋ 企業を登録
+            </button>
+
+        </section>
+
+
+        
+
+    <section>
+
+        <h2>登録企業</h2>
+
+        <div class="company-filter">
+
+            <input
+                type="text"
+                id="companySearch"
+                placeholder="企業名を検索"
+            >
+
+            <select id="companyFilter">
+
+                <option value="すべて">すべての選考状況</option>
+
+                <option value="気になる">気になる</option>
+
+                <option value="応募予定">応募予定</option>
+
+                <option value="ES提出済み">ES提出済み</option>
+
+                <option value="選考中">選考中</option>
+
+                <option value="最終面接">最終面接</option>
+
+                <option value="内定">内定</option>
+
+                <option value="不合格">不合格</option>
+
+            </select>
+
+
+            <select id="companySort">
+
+                <option value="new">登録が新しい順</option>
+
+                <option value="priority">志望度が高い順</option>
+
+                <option value="date">次の予定が近い順</option>
+
+            </select>
+
+        </div>
+
+
+        <ul id="companyList"></ul>
+
+    </section>
+
+    </main>
+
+
+    <script src="companies.js"></script>
+
+</body>
+
+</html>

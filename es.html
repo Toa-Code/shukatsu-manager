@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES・文章 - 就活Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>ES・文章</h1>
+        <p>ESや自己分析を保存します。</p>
+    </header>
+
+    <a href="index.html">← トップページへ戻る</a>
+
+    <main>
+
+        <section>
+            <h2>文章を追加</h2>
+
+            <input type="text" id="textTitle" placeholder="タイトルを入力">
+
+            <textarea id="textContent" placeholder="文章を入力"></textarea>
+
+            <button id="addTextButton">保存</button>
+        </section>
+
+        <section>
+            <h2>保存した文章</h2>
+
+            <ul id="textList"></ul>
+        </section>
+
+    </main>
+<script src="es.js"></script>
+</body>
+</html>
