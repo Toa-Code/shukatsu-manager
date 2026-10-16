@@ -654,3 +654,179 @@ button:hover {
         width: 100%;
     }
 }
+
+
+@media (max-width: 700px) {
+    header {
+        padding: 22px 16px;
+    }
+
+    .header-inner {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    header h1 {
+        font-size: 25px;
+        line-height: 1.3;
+        overflow-wrap: normal;
+        word-break: keep-all;
+    }
+
+    header p {
+        font-size: 13px;
+    }
+
+    .logout-button {
+        padding: 9px 11px;
+        font-size: 12px;
+    }
+
+    .nav-inner {
+        width: 100%;
+    }
+
+    .main-nav a {
+        min-width: 0;
+        padding: 14px 2px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    main {
+        margin: 20px auto;
+        padding: 0 14px;
+        min-width: 0;
+    }
+
+    section {
+        padding: 20px 16px;
+        margin-bottom: 16px;
+        border-radius: 15px;
+    }
+
+    .dashboard-title {
+        margin-bottom: 16px;
+    }
+
+    .dashboard-title h2 {
+        font-size: 22px;
+        line-height: 1.4;
+    }
+
+    .dashboard-title p {
+        font-size: 14px;
+    }
+
+    .status-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .status-card {
+        min-width: 0;
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .status-card span {
+        font-size: 14px;
+        line-height: 1.5;
+        overflow-wrap: normal;
+        word-break: keep-all;
+    }
+
+    .status-card strong {
+        font-size: 28px;
+        line-height: 1.3;
+    }
+
+    .status-card small {
+        font-size: 12px;
+    }
+
+    .menu-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .menu-card {
+        width: 100%;
+        min-width: 0;
+        min-height: 0;
+        padding: 17px;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .menu-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .menu-card h2 {
+        font-size: 17px;
+        line-height: 1.5;
+        overflow-wrap: normal;
+        word-break: keep-all;
+    }
+
+    .menu-card p {
+        font-size: 13px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+    }
+
+    #taskInput,
+    #companyInput {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    input,
+    select,
+    textarea {
+        max-width: 100%;
+        font-size: 16px;
+    }
+
+    button {
+        min-height: 42px;
+    }
+
+    .top-button {
+        right: 14px;
+        bottom: 14px;
+        width: 46px;
+        height: 46px;
+    }
+
+    .company-hero h2 {
+        font-size: 24px;
+        overflow-wrap: anywhere;
+    }
+
+    .next-schedule-card {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .research-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .company-task-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .company-task-item,
+    .company-linked-item,
+    .interview-item {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .back-button {
+        margin: 14px;
+    }
+}
