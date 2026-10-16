@@ -129,22 +129,21 @@ function displayTasks() {
             taskElement.classList.add("task-today");
         }
 
-        taskElement.innerHTML = `
-            <div>
-                <strong>${task.text}</strong>
-                <br>
-                <small>
-                    期限：
-                    <span class="task-date ${dateStatus}">
-                        ${getDateLabel(task.date)}
-                    </span>
-                    　
-                    優先度：
-                    <span class="task-priority priority-${task.priority}">
-                        ${task.priority}
-                    </span>
-                </small>
-            </div>
+       
+taskElement.innerHTML = `
+    <div>
+        <strong>${task.text}</strong>
+        <div class="task-meta">
+            <span>
+                期限：
+                <span class="task-date ${dateStatus}">${getDateLabel(task.date)}</span>
+            </span>
+            <span>
+                優先度：
+                <span class="task-priority priority-${task.priority}">${task.priority}</span>
+            </span>
+        </div>
+    </div>
 
             <div class="item-buttons">
                 <button class="complete-button">
