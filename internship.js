@@ -1,61 +1,60 @@
-const internshipCompany =
-    document.getElementById("internshipCompany");
+const internshipCompany = document.getElementById("internshipCompany");
+const internshipContent = document.getElementById("internshipContent");
+const addInternshipButton = document.getElementById("addInternshipButton");
+const internshipList = document.getElementById("internshipList");
 
-const internshipContent =
-    document.getElementById("internshipContent");
-
-const addInternshipButton =
-    document.getElementById("addInternshipButton");
-
-const internshipList =
-    document.getElementById("internshipList");
-
-
-let internships =
-    JSON.parse(localStorage.getItem("internships")) || [];
+let internships = [];
 
 let editingInternshipId = null;
 
+async function getCurrentUser() {
+    const { data, error } = await supabaseClient.auth.getUser();
 
-function saveInternships() {
+    if (error) {
+        console.error(error);
+        return null;
+    }
 
-    localStorage.setItem(
-        "internships",
-        JSON.stringify(internships)
-    );
-
+    return data.user;
 }
 
+async function loadInternships() {
+    const user = await getCurrentUser();
+
+    if (!user) {
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("internships")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    internships = data;
+
+    displayInternships();
+}
 
 function displayInternships() {
-
     internshipList.innerHTML = "";
 
-
     internships.forEach(function(internship) {
-
-        const internshipElement =
-            document.createElement("li");
-
+        const internshipElement = document.createElement("li");
 
         internshipElement.innerHTML = `
-
             <div>
-
-                <strong>
-                    ${internship.company}
-                </strong>
-
+                <strong>${internship.company}</strong>
                 <br>
-
-                <small>
-                    ${internship.content}
-                </small>
-
+                <small>${internship.content}</small>
             </div>
 
             <div class="item-buttons">
-
                 <button class="edit-button">
                     編集
                 </button>
@@ -63,138 +62,92 @@ function displayInternships() {
                 <button class="delete-button">
                     削除
                 </button>
-
             </div>
-
         `;
 
-
-        // 編集
-
-        const editButton =
-            internshipElement.querySelector(".edit-button");
-
+        const editButton = internshipElement.querySelector(".edit-button");
 
         editButton.addEventListener("click", function() {
+            internshipCompany.value = internship.company;
+            internshipContent.value = internship.content;
 
-            internshipCompany.value =
-                internship.company;
+            editingInternshipId = internship.id;
 
-            internshipContent.value =
-                internship.content;
-
-            editingInternshipId =
-                internship.id;
-
-            addInternshipButton.textContent =
-                "更新する";
+            addInternshipButton.textContent = "更新する";
 
             internshipCompany.focus();
-
         });
 
+        const deleteButton = internshipElement.querySelector(".delete-button");
 
-        // 削除
+        deleteButton.addEventListener("click", async function() {
+            const { error } = await supabaseClient
+                .from("internships")
+                .delete()
+                .eq("id", internship.id);
 
-        const deleteButton =
-            internshipElement.querySelector(".delete-button");
+            if (error) {
+                console.error(error);
+                return;
+            }
 
-
-        deleteButton.addEventListener("click", function() {
-
-            internships =
-                internships.filter(function(item) {
-
-                    return item.id !== internship.id;
-
-                });
-
-
-            saveInternships();
-
-            displayInternships();
-
+            loadInternships();
         });
-
 
         internshipList.appendChild(internshipElement);
-
     });
-
 }
 
-
-addInternshipButton.addEventListener("click", function() {
-
-    const company =
-        internshipCompany.value;
-
-    const content =
-        internshipContent.value;
-
+addInternshipButton.addEventListener("click", async function() {
+    const company = internshipCompany.value.trim();
+    const content = internshipContent.value.trim();
 
     if (company === "" || content === "") {
-
         return;
-
     }
 
+    const user = await getCurrentUser();
 
-    // 編集中
+    if (!user) {
+        return;
+    }
 
     if (editingInternshipId !== null) {
+        const { error } = await supabaseClient
+            .from("internships")
+            .update({
+                company: company,
+                content: content
+            })
+            .eq("id", editingInternshipId)
+            .eq("user_id", user.id);
 
-        const internship =
-            internships.find(function(item) {
-
-                return item.id === editingInternshipId;
-
-            });
-
-
-        internship.company = company;
-
-        internship.content = content;
-
+        if (error) {
+            console.error(error);
+            return;
+        }
 
         editingInternshipId = null;
+        addInternshipButton.textContent = "保存";
+    } else {
+        const { error } = await supabaseClient
+            .from("internships")
+            .insert({
+                user_id: user.id,
+                company: company,
+                content: content
+            });
 
-        addInternshipButton.textContent =
-            "保存";
-
+        if (error) {
+            console.error(error);
+            return;
+        }
     }
-
-
-    // 新規追加
-
-    else {
-
-        const newInternship = {
-
-            id: Date.now(),
-
-            company: company,
-
-            content: content
-
-        };
-
-
-        internships.push(newInternship);
-
-    }
-
-
-    saveInternships();
-
-    displayInternships();
-
 
     internshipCompany.value = "";
-
     internshipContent.value = "";
 
+    loadInternships();
 });
 
-
-displayInternships();
+loadInternships();

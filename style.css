@@ -5,116 +5,117 @@
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background-color: #f3f7fc;
+    background: #f4f7fb;
     color: #172033;
     line-height: 1.6;
 }
 
-
-/* ヘッダー */
-
 header {
     background: linear-gradient(135deg, #0f2347, #1d4ed8);
     color: white;
-    padding: 50px 20px 45px;
+    padding: 32px 20px;
+}
+
+.header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
 }
 
 header h1 {
-    max-width: 1000px;
-    margin: 0 auto;
-    font-size: 34px;
+    margin: 0;
+    font-size: 30px;
     font-weight: 700;
-    letter-spacing: 0.03em;
 }
 
 header p {
-    max-width: 1000px;
-    margin: 8px auto 0;
+    margin: 5px 0 0;
     color: #dbeafe;
-    font-size: 15px;
+    font-size: 14px;
 }
 
+.logout-button {
+    width: auto;
+    margin: 0;
+    padding: 9px 18px;
+    background: #e2e8f0;
+    color: #334155;
+    border-radius: 8px;
+    white-space: nowrap;
+}
 
-/* メイン */
+.logout-button:hover {
+    background: #cbd5e1;
+}
+
+.main-nav {
+    background: white;
+    border-bottom: 1px solid #dbe5f2;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.main-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 15px 8px;
+    text-decoration: none;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.main-nav a:hover {
+    color: #2563eb;
+    background: #f8fbff;
+}
+
+.main-nav a.active {
+    color: #2563eb;
+    border-bottom: 3px solid #2563eb;
+}
 
 main {
-    max-width: 1000px;
-    margin: 45px auto;
+    max-width: 1100px;
+    margin: 35px auto;
     padding: 0 20px;
 }
 
-
-/* セクション */
-
 section {
-    background-color: white;
-    padding: 30px;
-    margin-bottom: 24px;
-    border-radius: 16px;
+    background: white;
+    padding: 28px;
+    margin-bottom: 22px;
+    border-radius: 18px;
     border: 1px solid #dbe5f2;
-    box-shadow: 0 5px 18px rgba(15, 35, 71, 0.06);
+    box-shadow: 0 5px 18px rgba(15, 35, 71, 0.05);
 }
 
 section h2 {
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     font-size: 21px;
-    color: #172033;
 }
-
-
-/* トップページ */
-
-.menu-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-}
-
-.menu-card {
-    display: block;
-    background-color: white;
-    padding: 30px;
-    min-height: 170px;
-    border-radius: 18px;
-    border: 1px solid #dbe5f2;
-    box-shadow: 0 5px 18px rgba(15, 35, 71, 0.06);
-    text-decoration: none;
-    color: #172033;
-    transition: 0.2s;
-}
-
-.menu-card:hover {
-    transform: translateY(-5px);
-    border-color: #60a5fa;
-    box-shadow: 0 12px 28px rgba(29, 78, 216, 0.12);
-}
-
-.menu-card h2 {
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 21px;
-    color: #123b7a;
-}
-
-.menu-card p {
-    margin: 0;
-    color: #64748b;
-    font-size: 14px;
-}
-
-
-/* 入力フォーム */
 
 input,
 select,
 textarea {
     font-family: inherit;
     font-size: 14px;
-    padding: 11px 13px;
+    padding: 12px 13px;
     border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    background-color: white;
+    border-radius: 9px;
+    background: white;
     color: #172033;
     outline: none;
 }
@@ -132,15 +133,12 @@ textarea {
     resize: vertical;
 }
 
-
-/* ボタン */
-
 button {
-    background-color: #2563eb;
+    background: #2563eb;
     color: white;
     padding: 11px 18px;
     border: none;
-    border-radius: 8px;
+    border-radius: 9px;
     font-family: inherit;
     font-size: 14px;
     cursor: pointer;
@@ -148,11 +146,138 @@ button {
 }
 
 button:hover {
-    background-color: #1d4ed8;
+    background: #1d4ed8;
+    transform: translateY(-1px);
 }
 
+.edit-button {
+    background: #e0edff;
+    color: #2563eb;
+}
 
-/* タスク一覧 */
+.edit-button:hover {
+    background: #c7dcff;
+}
+
+.delete-button,
+.delete-company-button {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.delete-button:hover,
+.delete-company-button:hover {
+    background: #cbd5e1;
+}
+
+.dashboard-title {
+    margin-bottom: 20px;
+}
+
+.dashboard-title h2 {
+    margin-bottom: 4px;
+    font-size: 24px;
+}
+
+.dashboard-title p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.status-card {
+    background: white;
+    padding: 22px;
+    border-radius: 16px;
+    border: 1px solid #dbe5f2;
+    box-shadow: 0 5px 18px rgba(15, 35, 71, 0.05);
+    transition: 0.2s;
+}
+
+.status-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(29, 78, 216, 0.1);
+}
+
+.status-card span {
+    display: block;
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.status-card strong {
+    font-size: 32px;
+    color: #1d4ed8;
+}
+
+.status-card small {
+    margin-left: 4px;
+    color: #64748b;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.menu-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 17px;
+    background: white;
+    padding: 25px;
+    min-height: 150px;
+    border-radius: 17px;
+    border: 1px solid #dbe5f2;
+    box-shadow: 0 5px 18px rgba(15, 35, 71, 0.05);
+    text-decoration: none;
+    color: #172033;
+    transition: 0.2s;
+}
+
+.menu-card:hover {
+    transform: translateY(-4px);
+    border-color: #93c5fd;
+    box-shadow: 0 12px 28px rgba(29, 78, 216, 0.12);
+}
+
+.menu-card h2 {
+    margin: 0 0 8px;
+    font-size: 19px;
+    color: #123b7a;
+}
+
+.menu-card p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    background: #eff6ff;
+    color: #2563eb;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+#taskInput {
+    width: 300px;
+}
 
 #taskList {
     list-style: none;
@@ -166,16 +291,14 @@ button:hover {
     align-items: center;
     padding: 17px;
     margin-bottom: 10px;
-    background-color: #f8fbff;
+    background: #f8fbff;
     border: 1px solid #dbe5f2;
-    border-radius: 10px;
-    cursor: pointer;
+    border-radius: 12px;
+    transition: 0.2s;
 }
 
-#taskList li button {
-    margin-left: 15px;
-    padding: 7px 12px;
-    font-size: 13px;
+#taskList li:hover {
+    border-color: #93c5fd;
 }
 
 .completed {
@@ -183,344 +306,351 @@ button:hover {
     color: #94a3b8;
 }
 
-
-/* 企業・ES・インターン */
-
-#companyList,
-#textList,
-#internshipList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-#companyList li,
-#textList li,
-#internshipList li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 17px;
-    margin-bottom: 10px;
-    background-color: #f8fbff;
-    border: 1px solid #dbe5f2;
-    border-radius: 10px;
-}
-
-
-/* トップへ戻る */
-
-body > a {
-    display: block;
-    max-width: 1000px;
-    margin: 20px auto 0;
-    padding: 0 20px;
-    color: #2563eb;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-body > a:hover {
-    color: #1d4ed8;
-}
-
-
-/* タスク入力 */
-
-#taskInput {
-    width: 300px;
-}
-
-
-/* スマホ対応 */
-
-@media (max-width: 700px) {
-
-    header {
-        padding: 35px 20px 30px;
-    }
-
-    header h1 {
-        font-size: 28px;
-    }
-
-    main {
-        margin: 30px auto;
-    }
-
-    .menu-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .menu-card {
-        min-height: auto;
-    }
-
-    section {
-        padding: 22px;
-    }
-
-    input,
-    select,
-    textarea,
-    #taskInput {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    button {
-        width: 100%;
-    }
-
-}
-
-/* =========================
-   ダッシュボード
-========================= */
-
-.header-inner {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-
-.dashboard,
-.menu-section {
-    background-color: transparent;
-    padding: 0;
-    border: none;
-    box-shadow: none;
-}
-
-
-.dashboard-title {
-    margin-bottom: 20px;
-}
-
-.dashboard-title h2 {
-    margin-bottom: 5px;
-    font-size: 24px;
-}
-
-.dashboard-title p {
-    margin: 0;
-    color: #64748b;
-    font-size: 14px;
-}
-
-
-/* 状況カード */
-
-.status-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-}
-
-
-.status-card {
-    background-color: white;
-    padding: 22px;
-    border-radius: 14px;
-    border: 1px solid #dbe5f2;
-    box-shadow: 0 5px 18px rgba(15, 35, 71, 0.06);
-}
-
-
-.status-card span {
-    display: block;
-    color: #64748b;
-    font-size: 13px;
-    margin-bottom: 8px;
-}
-
-
-.status-card strong {
-    font-size: 32px;
-    color: #1d4ed8;
-}
-
-
-.status-card small {
-    margin-left: 4px;
-    color: #64748b;
-}
-
-
-/* 管理メニュー */
-
-.menu-section {
-    margin-top: 45px;
-}
-
-
-.menu-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 18px;
-}
-
-
-.menu-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 48px;
-    height: 48px;
-
-    flex-shrink: 0;
-
-    background: #eff6ff;
-    color: #2563eb;
-
-    border-radius: 12px;
-
-    font-size: 13px;
-    font-weight: 700;
-}
-
-
-/* スマホ */
-
-@media (max-width: 700px) {
-
-    .status-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-}
-
-
-@media (max-width: 450px) {
-
-    .status-grid {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-/* =========================
-   企業管理
-========================= */
-
 #companyInput {
     width: 300px;
-    margin-bottom: 10px;
-}
-
-#companyStatus {
-    margin-bottom: 10px;
-}
-
-#companyDate {
-    margin-bottom: 10px;
-}
-
-#companyPriority {
     margin-bottom: 10px;
 }
 
 #companyMemo {
     display: block;
     width: 100%;
-    max-width: 700px;
-    min-height: 120px;
-    margin-bottom: 15px;
+}
+
+.top-button {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    box-shadow: 0 5px 15px rgba(15, 35, 71, 0.2);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: 0.2s;
+}
+
+.top-button.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.top-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.status-card {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.status-card:hover {
+    transform: translateY(-3px);
+}
+
+.task-item {
+    transition: transform 0.2s ease;
+}
+
+.task-item:hover {
+    transform: translateY(-2px);
+}
+
+.task-date.overdue {
+    font-weight: bold;
+}
+
+.task-date.today {
+    font-weight: bold;
+}
+
+.task-date.none {
+    opacity: 0.6;
+}
+
+.task-priority {
+    font-weight: bold;
+}
+
+.task-item.completed {
+    opacity: 0.55;
+}
+
+.task-item.completed strong {
+    text-decoration: line-through;
+}
+
+.task-item.task-overdue {
+    border-left: 4px solid currentColor;
+}
+
+.task-item.task-today {
+    border-left: 4px solid currentColor;
+}
+
+.hidden {
+    display: none;
+}
+
+.company-detail-info {
+    display: grid;
+    gap: 16px;
+}
+
+.company-detail-info p {
+    margin: 0;
+}
+
+.company-detail-info strong {
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+#companyMemo {
+    white-space: pre-wrap;
+}
+
+#noCompanyTexts {
+    opacity: 0.7;
+}
+
+.interview-form {
+    display: grid;
+    gap: 12px;
+}
+
+.interview-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.interview-item {
+    transition: transform 0.2s ease;
+}
+
+.interview-item:hover {
+    transform: translateY(-2px);
+}
+
+.interview-info p {
+    white-space: pre-wrap;
+}
+
+.interview-info strong {
+    display: inline-block;
+    margin-bottom: 4px;
 }
 
 
-/* 企業一覧 */
+.back-button {
+    margin: 20px max(20px, calc((100% - 1100px) / 2));
+    background: white;
+    color: #2563eb;
+    border: 1px solid #cbd5e1;
+}
 
-#companyList {
+.back-button:hover {
+    background: #f8fbff;
+}
+
+.company-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.company-hero h2 {
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.company-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.next-schedule-card {
+    display: flex;
+    gap: 50px;
+    padding: 18px;
+    margin-bottom: 15px;
+    background: #f8fbff;
+    border: 1px solid #dbe5f2;
+    border-radius: 12px;
+}
+
+.next-schedule-card > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.detail-label {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.detail-memo {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.research-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.research-card {
+    padding: 18px;
+    background: #f8fbff;
+    border: 1px solid #dbe5f2;
+    border-radius: 12px;
+}
+
+.research-card:last-child {
+    grid-column: 1 / -1;
+}
+
+.research-card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: #123b7a;
+}
+
+.research-card p {
+    margin: 0;
+    white-space: pre-wrap;
+    color: #475569;
+}
+
+#editCompanySection label,
+#editResearchSection label {
+    display: block;
+    margin: 12px 0 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+#editCompanySection input,
+#editCompanySection select,
+#editResearchSection textarea {
+    width: 100%;
+}
+
+.company-task-form {
+    display: grid;
+    grid-template-columns: 1fr 170px 140px auto;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.company-task-form input,
+.company-task-form select {
+    width: 100%;
+}
+
+#companyTaskList,
+#companyTextList,
+#interviewList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-
-.company-item {
+.company-task-item,
+.company-linked-item,
+.interview-item {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-
-    padding: 22px;
-
-    margin-bottom: 14px;
-
-    background-color: #f8fbff;
-
+    gap: 18px;
+    padding: 16px;
+    margin-bottom: 10px;
+    background: #f8fbff;
     border: 1px solid #dbe5f2;
-
-    border-radius: 14px;
-
-    transition: 0.2s;
+    border-radius: 12px;
 }
 
-
-.company-item:hover {
-    border-color: #93c5fd;
-
-    box-shadow:
-        0 8px 20px rgba(29, 78, 216, 0.08);
+.company-task-item strong {
+    display: block;
+    margin-bottom: 4px;
 }
 
-
-.company-info h3 {
-    margin: 0 0 10px;
-
-    color: #123b7a;
-
-    font-size: 20px;
-}
-
-
-.company-info p {
-    margin: 6px 0;
-
+.company-task-item small {
     color: #64748b;
-
-    font-size: 14px;
 }
 
-
-.company-info strong {
-    color: #2563eb;
+.company-linked-item {
+    display: block;
 }
 
-
-.company-stars {
-    color: #2563eb !important;
-
-    font-size: 17px !important;
-    letter-spacing: 2px;
+.company-linked-item strong {
+    color: #123b7a;
 }
 
-
-.company-memo {
-    margin-top: 12px !important;
-
-    padding: 10px 12px;
-
-    background-color: white;
-
-    border-radius: 8px;
-
-    border-left: 3px solid #2563eb;
-}
-
-
-.delete-company-button {
-    flex-shrink: 0;
-
-    margin-left: 20px;
-
-    background-color: #e2e8f0;
-
+.company-linked-item p {
+    margin: 7px 0 0;
+    white-space: pre-wrap;
     color: #475569;
 }
 
+.interview-info {
+    flex: 1;
+}
 
-.delete-company-button:hover {
-    background-color: #cbd5e1;
+@media (max-width: 700px) {
+    .company-hero {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .next-schedule-card {
+        gap: 25px;
+    }
+
+    .research-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .research-card:last-child {
+        grid-column: auto;
+    }
+
+    .company-task-form {
+        grid-template-columns: 1fr;
+    }
+
+    .company-task-item,
+    .interview-item {
+        flex-direction: column;
+    }
+
+    .company-task-item .item-buttons,
+    .interview-item .item-buttons {
+        width: 100%;
+    }
 }

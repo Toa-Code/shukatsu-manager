@@ -17,6 +17,16 @@
         <p>気になる企業や選考状況を管理します。</p>
     </header>
 
+    <nav class="main-nav">
+    <div class="nav-inner">
+        <a href="index.html">ホーム</a>
+        <a href="tasks.html">タスク</a>
+        <a href="companies.html" class="active">企業</a>
+        <a href="es.html">ES</a>
+        <a href="internship.html">振り返り</a>
+    </div>
+    </nav>
+
 
     <a href="index.html">← トップページへ戻る</a>
 
@@ -36,23 +46,26 @@
             >
 
 
-            <select id="companyStatus">
+            <label for="companyCategory">志望カテゴリ</label>
 
-                <option value="気になる">気になる</option>
+<select id="companyCategory">
+    <option value="本命">本命</option>
+    <option value="目標">目標</option>
+    <option value="有力候補">有力候補</option>
+    <option value="気になる">気になる</option>
+</select>
 
-                <option value="応募予定">応募予定</option>
+<label for="companySelectionStatus">選考状況</label>
 
-                <option value="ES提出済み">ES提出済み</option>
-
-                <option value="選考中">選考中</option>
-
-                <option value="最終面接">最終面接</option>
-
-                <option value="内定">内定</option>
-
-                <option value="不合格">不合格</option>
-
-            </select>
+<select id="companySelectionStatus">
+    <option value="未応募">未応募</option>
+    <option value="応募予定">応募予定</option>
+    <option value="ES提出済み">ES提出済み</option>
+    <option value="選考中">選考中</option>
+    <option value="最終面接">最終面接</option>
+    <option value="内定">内定</option>
+    <option value="不合格">不合格</option>
+</select>
 
 
             <input
@@ -103,36 +116,30 @@
                 placeholder="企業名を検索"
             >
 
-            <select id="companyFilter">
+           <select id="companyFilterCategory">
+    <option value="すべて">すべての志望カテゴリ</option>
+    <option value="本命">本命</option>
+    <option value="目標">目標</option>
+    <option value="有力候補">有力候補</option>
+    <option value="気になる">気になる</option>
+</select>
 
-                <option value="すべて">すべての選考状況</option>
+<select id="companyFilterStatus">
+    <option value="すべて">すべての選考状況</option>
+    <option value="未応募">未応募</option>
+    <option value="応募予定">応募予定</option>
+    <option value="ES提出済み">ES提出済み</option>
+    <option value="選考中">選考中</option>
+    <option value="最終面接">最終面接</option>
+    <option value="内定">内定</option>
+    <option value="不合格">不合格</option>
+</select>
 
-                <option value="気になる">気になる</option>
-
-                <option value="応募予定">応募予定</option>
-
-                <option value="ES提出済み">ES提出済み</option>
-
-                <option value="選考中">選考中</option>
-
-                <option value="最終面接">最終面接</option>
-
-                <option value="内定">内定</option>
-
-                <option value="不合格">不合格</option>
-
-            </select>
-
-
-            <select id="companySort">
-
-                <option value="new">登録が新しい順</option>
-
-                <option value="priority">志望度が高い順</option>
-
-                <option value="date">次の予定が近い順</option>
-
-            </select>
+<select id="companySort">
+    <option value="new">新しい順</option>
+    <option value="priority">優先度順</option>
+    <option value="date">予定日順</option>
+</select>
 
         </div>
 
@@ -142,6 +149,10 @@
     </section>
 
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
 
 
     <script src="companies.js"></script>

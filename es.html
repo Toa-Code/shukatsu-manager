@@ -14,6 +14,16 @@
         <p>ESや自己分析を保存します。</p>
     </header>
 
+    <nav class="main-nav">
+    <div class="nav-inner">
+        <a href="index.html">ホーム</a>
+        <a href="tasks.html">タスク</a>
+        <a href="companies.html">企業</a>
+        <a href="es.html" class="active">ES</a>
+        <a href="internship.html">振り返り</a>
+    </div>
+</nav>
+
     <a href="index.html">← トップページへ戻る</a>
 
     <main>
@@ -23,7 +33,14 @@
 
             <input type="text" id="textTitle" placeholder="タイトルを入力">
 
-            <textarea id="textContent" placeholder="文章を入力"></textarea>
+<label for="textCompany">企業</label>
+<select id="textCompany">
+    <option value="">企業を指定しない</option>
+</select>
+
+<textarea id="textContent" placeholder="文章を入力"></textarea>
+
+<div id="textCount">0文字</div>
 
             <button id="addTextButton">保存</button>
         </section>
@@ -35,6 +52,9 @@
         </section>
 
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
 <script src="es.js"></script>
 </body>
 </html>

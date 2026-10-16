@@ -1,5 +1,6 @@
 const companyInput = document.getElementById("companyInput");
-const companyStatus = document.getElementById("companyStatus");
+const companyCategory = document.getElementById("companyCategory");
+const companySelectionStatus = document.getElementById("companySelectionStatus");
 const companyDate = document.getElementById("companyDate");
 const companyPriority = document.getElementById("companyPriority");
 const companyMemo = document.getElementById("companyMemo");
@@ -8,357 +9,259 @@ const addCompanyButton = document.getElementById("addCompanyButton");
 const companyList = document.getElementById("companyList");
 
 const companySearch = document.getElementById("companySearch");
-const companyFilter = document.getElementById("companyFilter");
+const companyFilterCategory = document.getElementById("companyFilterCategory");
+const companyFilterStatus = document.getElementById("companyFilterStatus");
 const companySort = document.getElementById("companySort");
 
-
-let companies = JSON.parse(localStorage.getItem("companies")) || [];
+let companies = [];
 
 let editingCompanyId = null;
 
+async function getCurrentUser() {
+    const { data, error } = await supabaseClient.auth.getUser();
 
-/* =========================
-   保存
-========================= */
+    if (error) {
+        console.error(error);
+        return null;
+    }
 
-function saveCompanies() {
-
-    localStorage.setItem(
-        "companies",
-        JSON.stringify(companies)
-    );
-
+    return data.user;
 }
 
+async function loadCompanies() {
+    const user = await getCurrentUser();
 
-/* =========================
-   企業表示
-========================= */
+    if (!user) {
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("companies")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    companies = data;
+
+    displayCompanies();
+}
 
 function displayCompanies() {
-
     companyList.innerHTML = "";
-
 
     let displayedCompanies = [...companies];
 
+    const searchText = companySearch.value.toLowerCase();
 
-    /* 検索 */
+    displayedCompanies = displayedCompanies.filter(function(company) {
+        return company.name.toLowerCase().includes(searchText);
+    });
 
-    const searchText =
-        companySearch.value.toLowerCase();
-
-
-    displayedCompanies =
-        displayedCompanies.filter(function(company) {
-
-            return company.name
-                .toLowerCase()
-                .includes(searchText);
-
+    if (companyFilterCategory.value !== "すべて") {
+        displayedCompanies = displayedCompanies.filter(function(company) {
+            return company.category === companyFilterCategory.value;
         });
-
-
-    /* 選考状況で絞り込み */
-
-    if (companyFilter.value !== "すべて") {
-
-        displayedCompanies =
-            displayedCompanies.filter(function(company) {
-
-                return company.status === companyFilter.value;
-
-            });
-
     }
 
-
-    /* 並び替え */
+    if (companyFilterStatus.value !== "すべて") {
+        displayedCompanies = displayedCompanies.filter(function(company) {
+            return company.selection_status === companyFilterStatus.value;
+        });
+    }
 
     if (companySort.value === "priority") {
-
         displayedCompanies.sort(function(a, b) {
-
-            return Number(b.priority || 0)
-                - Number(a.priority || 0);
-
+            return Number(b.priority || 0) - Number(a.priority || 0);
         });
-
     }
 
-
     if (companySort.value === "date") {
-
         displayedCompanies.sort(function(a, b) {
-
             if (!a.date) return 1;
-
             if (!b.date) return -1;
 
             return a.date.localeCompare(b.date);
-
         });
-
     }
-
 
     if (companySort.value === "new") {
-
         displayedCompanies.sort(function(a, b) {
-
-            return b.id - a.id;
-
+            return new Date(b.created_at) - new Date(a.created_at);
         });
-
     }
 
-
-    /* 企業を表示 */
-
     displayedCompanies.forEach(function(company) {
-
-        const companyElement =
-            document.createElement("li");
+        const companyElement = document.createElement("li");
 
         companyElement.classList.add("company-item");
 
-
-        const priority =
-            Number(company.priority) || 1;
-
+        const priority = Number(company.priority) || 1;
 
         companyElement.innerHTML = `
-
             <div class="company-info">
-
                 <h3>${company.name}</h3>
 
+                <p>
+                    志望カテゴリ：
+                    <span class="status-badge status-${company.category}">
+                        ${company.category || "未設定"}
+                    </span>
+                </p>
 
                 <p>
                     選考状況：
-                    <strong>${company.status}</strong>
+                    <span class="status-badge status-${company.selection_status}">
+                        ${company.selection_status || "未設定"}
+                    </span>
                 </p>
-
 
                 <p>
-                    次の予定：
-                    ${company.date || "未設定"}
+                    次の予定：${company.date || "未設定"}
                 </p>
-
 
                 <p class="company-stars">
-
                     ${"★".repeat(priority)}
                     ${"☆".repeat(5 - priority)}
-
                 </p>
-
 
                 <p class="company-memo">
-
                     ${company.memo || "メモなし"}
-
                 </p>
-
             </div>
 
-
             <div class="item-buttons">
+                <button class="detail-button">
+                    詳細
+                </button>
 
                 <button class="edit-button">
                     編集
                 </button>
 
-
                 <button class="delete-company-button">
                     削除
                 </button>
-
             </div>
-
         `;
 
+        const detailButton = companyElement.querySelector(".detail-button");
 
-        /* 編集 */
+        detailButton.addEventListener("click", function() {
+            window.location.href = `company-detail.html?id=${company.id}`;
+        });
 
-        const editButton =
-            companyElement.querySelector(".edit-button");
-
+        const editButton = companyElement.querySelector(".edit-button");
 
         editButton.addEventListener("click", function() {
-
             companyInput.value = company.name;
-
-            companyStatus.value = company.status;
-
+            companyCategory.value = company.category || "気になる";
+            companySelectionStatus.value = company.selection_status || "未応募";
             companyDate.value = company.date || "";
-
-            companyPriority.value =
-                company.priority || 1;
-
-            companyMemo.value =
-                company.memo || "";
-
+            companyPriority.value = company.priority || 1;
+            companyMemo.value = company.memo || "";
 
             editingCompanyId = company.id;
 
-
-            addCompanyButton.textContent =
-                "更新する";
-
+            addCompanyButton.textContent = "更新する";
 
             companyInput.focus();
-
         });
 
+        const deleteButton = companyElement.querySelector(".delete-company-button");
 
-        /* 削除 */
+        deleteButton.addEventListener("click", async function() {
+            const user = await getCurrentUser();
 
-        const deleteButton =
-            companyElement.querySelector(
-                ".delete-company-button"
-            );
+            if (!user) {
+                return;
+            }
 
+            const { error } = await supabaseClient
+                .from("companies")
+                .delete()
+                .eq("id", company.id)
+                .eq("user_id", user.id);
 
-        deleteButton.addEventListener("click", function() {
+            if (error) {
+                console.error(error);
+                return;
+            }
 
-            companies =
-                companies.filter(function(item) {
-
-                    return item.id !== company.id;
-
-                });
-
-
-            saveCompanies();
-
-            displayCompanies();
-
+            loadCompanies();
         });
-
 
         companyList.appendChild(companyElement);
-
     });
-
 }
 
-
-/* =========================
-   登録・更新
-========================= */
-
-addCompanyButton.addEventListener("click", function() {
-
-    const companyName =
-        companyInput.value;
-
+addCompanyButton.addEventListener("click", async function() {
+    const companyName = companyInput.value.trim();
 
     if (companyName === "") {
-
         return;
-
     }
 
+    const user = await getCurrentUser();
 
-    /* 編集中 */
+    if (!user) {
+        return;
+    }
 
     if (editingCompanyId !== null) {
+        const { error } = await supabaseClient
+            .from("companies")
+            .update({
+                name: companyName,
+                category: companyCategory.value,
+                selection_status: companySelectionStatus.value,
+                date: companyDate.value || null,
+                priority: Number(companyPriority.value),
+                memo: companyMemo.value
+            })
+            .eq("id", editingCompanyId)
+            .eq("user_id", user.id);
 
-        const company =
-            companies.find(function(item) {
-
-                return item.id === editingCompanyId;
-
-            });
-
-
-        company.name = companyName;
-
-        company.status =
-            companyStatus.value;
-
-        company.date =
-            companyDate.value;
-
-        company.priority =
-            Number(companyPriority.value);
-
-        company.memo =
-            companyMemo.value;
-
+        if (error) {
+            console.error(error);
+            return;
+        }
 
         editingCompanyId = null;
+        addCompanyButton.textContent = "＋ 企業を登録";
+    } else {
+        const { error } = await supabaseClient
+            .from("companies")
+            .insert({
+                user_id: user.id,
+                name: companyName,
+                category: companyCategory.value,
+                selection_status: companySelectionStatus.value,
+                date: companyDate.value || null,
+                priority: Number(companyPriority.value),
+                memo: companyMemo.value
+            });
 
-
-        addCompanyButton.textContent =
-            "＋ 企業を登録";
-
+        if (error) {
+            console.error(error);
+            return;
+        }
     }
-
-
-    /* 新規登録 */
-
-    else {
-
-        const newCompany = {
-
-            id: Date.now(),
-
-            name: companyName,
-
-            status: companyStatus.value,
-
-            date: companyDate.value,
-
-            priority: Number(companyPriority.value),
-
-            memo: companyMemo.value
-
-        };
-
-
-        companies.push(newCompany);
-
-    }
-
-
-    saveCompanies();
-
-    displayCompanies();
-
 
     companyInput.value = "";
-
     companyDate.value = "";
-
     companyMemo.value = "";
 
+    loadCompanies();
 });
 
+companySearch.addEventListener("input", displayCompanies);
+companyFilterCategory.addEventListener("change", displayCompanies);
+companyFilterStatus.addEventListener("change", displayCompanies);
+companySort.addEventListener("change", displayCompanies);
 
-/* =========================
-   検索・絞り込み・並び替え
-========================= */
-
-companySearch.addEventListener(
-    "input",
-    displayCompanies
-);
-
-
-companyFilter.addEventListener(
-    "change",
-    displayCompanies
-);
-
-
-companySort.addEventListener(
-    "change",
-    displayCompanies
-);
-
-
-/* 最初に表示 */
-
-displayCompanies();
+loadCompanies();

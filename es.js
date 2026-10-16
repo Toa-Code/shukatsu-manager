@@ -1,50 +1,125 @@
 const textTitle = document.getElementById("textTitle");
+const textCompany = document.getElementById("textCompany");
 const textContent = document.getElementById("textContent");
+const textCount = document.getElementById("textCount");
 const addTextButton = document.getElementById("addTextButton");
 const textList = document.getElementById("textList");
 
+let texts = [];
+let companies = [];
 
-let texts = JSON.parse(localStorage.getItem("texts")) || [];
+function updateTextCount() {
+    textCount.textContent = `${textContent.value.length}文字`;
+}
+
+textContent.addEventListener("input", updateTextCount);
+
+updateTextCount();
 
 let editingTextId = null;
 
+async function getCurrentUser() {
+    const { data, error } = await supabaseClient.auth.getUser();
 
-function saveTexts() {
+    if (error) {
+        console.error(error);
+        return null;
+    }
 
-    localStorage.setItem(
-        "texts",
-        JSON.stringify(texts)
-    );
-
+    return data.user;
 }
 
+async function loadCompanies() {
+    const user = await getCurrentUser();
+
+    if (!user) {
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("companies")
+        .select("id, name")
+        .eq("user_id", user.id)
+        .order("name", { ascending: true });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    companies = data;
+
+    textCompany.innerHTML = `
+        <option value="">企業を指定しない</option>
+    `;
+
+    companies.forEach(function(company) {
+        const option = document.createElement("option");
+
+        option.value = company.id;
+        option.textContent = company.name;
+
+        textCompany.appendChild(option);
+    });
+}
+
+async function loadTexts() {
+    const user = await getCurrentUser();
+
+    if (!user) {
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("texts")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    texts = data;
+
+    displayTexts();
+}
+
+function getCompanyName(companyId) {
+    if (!companyId) {
+        return "企業未指定";
+    }
+
+    const company = companies.find(function(company) {
+        return company.id === companyId;
+    });
+
+    if (!company) {
+        return "企業未指定";
+    }
+
+    return company.name;
+}
 
 function displayTexts() {
-
     textList.innerHTML = "";
 
-
     texts.forEach(function(text) {
-
         const textElement = document.createElement("li");
 
+        const companyName = getCompanyName(text.company_id);
 
         textElement.innerHTML = `
-
             <div>
-
                 <strong>${text.title}</strong>
-
                 <br>
-
-                <small>
-                    ${text.content}
-                </small>
-
+                <small>企業：${companyName}</small>
+                <br>
+                <small>${text.content}</small>
             </div>
 
             <div class="item-buttons">
-
                 <button class="edit-button">
                     編集
                 </button>
@@ -52,22 +127,14 @@ function displayTexts() {
                 <button class="delete-button">
                     削除
                 </button>
-
             </div>
-
         `;
 
-
-        // 編集
-
-        const editButton =
-            textElement.querySelector(".edit-button");
-
+        const editButton = textElement.querySelector(".edit-button");
 
         editButton.addEventListener("click", function() {
-
             textTitle.value = text.title;
-
+            textCompany.value = text.company_id || "";
             textContent.value = text.content;
 
             editingTextId = text.id;
@@ -75,106 +142,94 @@ function displayTexts() {
             addTextButton.textContent = "更新する";
 
             textTitle.focus();
-
         });
 
+        const deleteButton = textElement.querySelector(".delete-button");
 
-        // 削除
+        deleteButton.addEventListener("click", async function() {
+            const user = await getCurrentUser();
 
-        const deleteButton =
-            textElement.querySelector(".delete-button");
+            if (!user) {
+                return;
+            }
 
+            const { error } = await supabaseClient
+                .from("texts")
+                .delete()
+                .eq("id", text.id)
+                .eq("user_id", user.id);
 
-        deleteButton.addEventListener("click", function() {
+            if (error) {
+                console.error(error);
+                return;
+            }
 
-            texts = texts.filter(function(item) {
-
-                return item.id !== text.id;
-
-            });
-
-
-            saveTexts();
-
-            displayTexts();
-
+            loadTexts();
         });
-
 
         textList.appendChild(textElement);
-
     });
-
 }
 
-
-addTextButton.addEventListener("click", function() {
-
-    const title = textTitle.value;
-
-    const content = textContent.value;
-
+addTextButton.addEventListener("click", async function() {
+    const title = textTitle.value.trim();
+    const companyId = textCompany.value || null;
+    const content = textContent.value.trim();
 
     if (title === "" || content === "") {
-
         return;
-
     }
 
+    const user = await getCurrentUser();
 
-    // 編集中
+    if (!user) {
+        return;
+    }
 
     if (editingTextId !== null) {
+        const { error } = await supabaseClient
+            .from("texts")
+            .update({
+                title: title,
+                company_id: companyId,
+                content: content
+            })
+            .eq("id", editingTextId)
+            .eq("user_id", user.id);
 
-        const text = texts.find(function(item) {
-
-            return item.id === editingTextId;
-
-        });
-
-
-        text.title = title;
-
-        text.content = content;
-
+        if (error) {
+            console.error(error);
+            return;
+        }
 
         editingTextId = null;
-
         addTextButton.textContent = "保存";
+    } else {
+        const { error } = await supabaseClient
+            .from("texts")
+            .insert({
+                user_id: user.id,
+                title: title,
+                company_id: companyId,
+                content: content
+            });
 
+        if (error) {
+            console.error(error);
+            return;
+        }
     }
-
-
-    // 新規追加
-
-    else {
-
-        const newText = {
-
-            id: Date.now(),
-
-            title: title,
-
-            content: content
-
-        };
-
-
-        texts.push(newText);
-
-    }
-
-
-    saveTexts();
-
-    displayTexts();
-
 
     textTitle.value = "";
-
+    textCompany.value = "";
     textContent.value = "";
 
+    loadTexts();
 });
 
+async function initialize() {
+    await loadCompanies();
+    await loadTexts();
+}
 
-displayTexts();
+initialize();

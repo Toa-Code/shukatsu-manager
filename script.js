@@ -4,43 +4,152 @@ const taskPriority = document.getElementById("taskPriority");
 const addTaskButton = document.getElementById("addTaskButton");
 const taskList = document.getElementById("taskList");
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
+let tasks = [];
 let editingTaskId = null;
 
+async function getCurrentUser() {
+    const { data, error } = await supabaseClient.auth.getUser();
 
-function saveTasks() {
+    if (error) {
+        console.error(error);
+        return null;
+    }
 
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-
+    return data.user;
 }
 
+function getToday() {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+function getDateStatus(date) {
+    if (!date) {
+        return "none";
+    }
+
+    const today = getToday();
+
+    if (date < today) {
+        return "overdue";
+    }
+
+    if (date === today) {
+        return "today";
+    }
+
+    return "future";
+}
+
+function getDateLabel(date) {
+    const status = getDateStatus(date);
+
+    if (status === "none") {
+        return "期限なし";
+    }
+
+    if (status === "overdue") {
+        return "期限切れ";
+    }
+
+    if (status === "today") {
+        return "今日";
+    }
+
+    return date;
+}
+
+async function loadTasks() {
+    const user = await getCurrentUser();
+
+    if (!user) {
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .from("tasks")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    tasks = data;
+
+    displayTasks();
+}
 
 function displayTasks() {
-
     taskList.innerHTML = "";
 
-    tasks.forEach(function(task) {
+    const sortedTasks = [...tasks].sort(function(a, b) {
+        if (a.completed !== b.completed) {
+            return a.completed ? 1 : -1;
+        }
 
+        if (!a.date && !b.date) {
+            return new Date(b.created_at) - new Date(a.created_at);
+        }
+
+        if (!a.date) {
+            return 1;
+        }
+
+        if (!b.date) {
+            return -1;
+        }
+
+        return a.date.localeCompare(b.date);
+    });
+
+    sortedTasks.forEach(function(task) {
         const taskElement = document.createElement("li");
 
+        taskElement.classList.add("task-item");
+
+        const dateStatus = getDateStatus(task.date);
+
+        if (task.completed) {
+            taskElement.classList.add("completed");
+        }
+
+        if (!task.completed && dateStatus === "overdue") {
+            taskElement.classList.add("task-overdue");
+        }
+
+        if (!task.completed && dateStatus === "today") {
+            taskElement.classList.add("task-today");
+        }
+
         taskElement.innerHTML = `
-
             <div>
-
                 <strong>${task.text}</strong>
-
                 <br>
-
                 <small>
-                    期限：${task.date || "未設定"}
+                    期限：
+                    <span class="task-date ${dateStatus}">
+                        ${getDateLabel(task.date)}
+                    </span>
                     　
-                    優先度：${task.priority}
+                    優先度：
+                    <span class="task-priority priority-${task.priority}">
+                        ${task.priority}
+                    </span>
                 </small>
-
             </div>
 
             <div class="item-buttons">
+                <button class="complete-button">
+                    ${task.completed ? "未完了に戻す" : "完了"}
+                </button>
 
                 <button class="edit-button">
                     編集
@@ -49,44 +158,39 @@ function displayTasks() {
                 <button class="delete-button">
                     削除
                 </button>
-
             </div>
-
         `;
 
+        const completeButton = taskElement.querySelector(".complete-button");
 
-        if (task.completed) {
+        completeButton.addEventListener("click", async function() {
+            const user = await getCurrentUser();
 
-            taskElement.classList.add("completed");
+            if (!user) {
+                return;
+            }
 
-        }
+            const { error } = await supabaseClient
+                .from("tasks")
+                .update({
+                    completed: !task.completed
+                })
+                .eq("id", task.id)
+                .eq("user_id", user.id);
 
+            if (error) {
+                console.error(error);
+                return;
+            }
 
-        // 完了・未完了
-
-        taskElement.querySelector("strong").addEventListener("click", function() {
-
-            task.completed = !task.completed;
-
-            saveTasks();
-
-            displayTasks();
-
+            loadTasks();
         });
 
-
-        // 編集
-
-        const editButton =
-            taskElement.querySelector(".edit-button");
-
+        const editButton = taskElement.querySelector(".edit-button");
 
         editButton.addEventListener("click", function() {
-
             taskInput.value = task.text;
-
             taskDate.value = task.date || "";
-
             taskPriority.value = task.priority;
 
             editingTaskId = task.id;
@@ -94,109 +198,88 @@ function displayTasks() {
             addTaskButton.textContent = "更新する";
 
             taskInput.focus();
-
         });
 
+        const deleteButton = taskElement.querySelector(".delete-button");
 
-        // 削除
+        deleteButton.addEventListener("click", async function() {
+            const user = await getCurrentUser();
 
-        const deleteButton =
-            taskElement.querySelector(".delete-button");
+            if (!user) {
+                return;
+            }
 
+            const { error } = await supabaseClient
+                .from("tasks")
+                .delete()
+                .eq("id", task.id)
+                .eq("user_id", user.id);
 
-        deleteButton.addEventListener("click", function() {
+            if (error) {
+                console.error(error);
+                return;
+            }
 
-            tasks = tasks.filter(function(item) {
-
-                return item.id !== task.id;
-
-            });
-
-            saveTasks();
-
-            displayTasks();
-
+            loadTasks();
         });
-
 
         taskList.appendChild(taskElement);
-
     });
-
 }
 
-
-addTaskButton.addEventListener("click", function() {
-
-    const taskText = taskInput.value;
-
+addTaskButton.addEventListener("click", async function() {
+    const taskText = taskInput.value.trim();
 
     if (taskText === "") {
-
         return;
-
     }
 
+    const user = await getCurrentUser();
 
-    // 編集中
+    if (!user) {
+        return;
+    }
 
     if (editingTaskId !== null) {
+        const { error } = await supabaseClient
+            .from("tasks")
+            .update({
+                text: taskText,
+                date: taskDate.value || null,
+                priority: taskPriority.value
+            })
+            .eq("id", editingTaskId)
+            .eq("user_id", user.id);
 
-        const task = tasks.find(function(item) {
-
-            return item.id === editingTaskId;
-
-        });
-
-
-        task.text = taskText;
-
-        task.date = taskDate.value;
-
-        task.priority = taskPriority.value;
-
+        if (error) {
+            console.error(error);
+            return;
+        }
 
         editingTaskId = null;
-
         addTaskButton.textContent = "追加";
+    } else {
+        const { error } = await supabaseClient
+            .from("tasks")
+            .insert({
+                user_id: user.id,
+                text: taskText,
+                date: taskDate.value || null,
+                priority: taskPriority.value,
+                completed: false
+            });
 
+        if (error) {
+            console.error(error);
+            return;
+        }
     }
-
-
-    // 新規追加
-
-    else {
-
-        const newTask = {
-
-            id: Date.now(),
-
-            text: taskText,
-
-            date: taskDate.value,
-
-            priority: taskPriority.value,
-
-            completed: false
-
-        };
-
-
-        tasks.push(newTask);
-
-    }
-
-
-    saveTasks();
-
-    displayTasks();
-
 
     taskInput.value = "";
-
     taskDate.value = "";
+    taskPriority.value = "高";
 
+    loadTasks();
 });
 
-
-displayTasks();
+loadTasks();

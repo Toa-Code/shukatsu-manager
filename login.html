@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン - 就活Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="login-page">
+
+    <main class="login-container">
+
+        <section class="login-box">
+
+            <h1>就活Manager</h1>
+
+            <p class="login-subtitle">
+                自分の就活を、ひとつにまとめる。
+            </p>
+
+            <h2>ログイン</h2>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="メールアドレス"
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="パスワード"
+            >
+
+            <button id="loginButton">
+                ログイン
+            </button>
+
+            <p id="loginMessage"></p>
+
+            <p class="login-register">
+                アカウントをお持ちでない方
+            </p>
+
+            <button id="registerButton" class="secondary-button">
+                新規登録
+            </button>
+
+        </section>
+
+    </main>
+    <script>
+    document.getElementById("registerButton").addEventListener("click", function() {
+        location.href = "register.html";
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="login.js"></script>
+
+</body>
+</html>

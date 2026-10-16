@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企業詳細 - 就活Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>企業詳細</h1>
+        <p>企業ごとの情報をまとめて確認します。</p>
+    </header>
+
+    <nav class="main-nav">
+        <div class="nav-inner">
+            <a href="index.html">ホーム</a>
+            <a href="tasks.html">タスク</a>
+            <a href="companies.html" class="active">企業</a>
+            <a href="es.html">ES</a>
+            <a href="internship.html">振り返り</a>
+        </div>
+    </nav>
+
+    <button type="button" class="back-button" onclick="location.href='companies.html'">
+        ← 企業一覧へ戻る
+    </button>
+
+    <main>
+
+        <section class="company-hero">
+            <div>
+                <h2 id="companyName">企業情報</h2>
+                <div class="company-badges">
+                    <span id="companyCategory" class="status-badge">-</span>
+                    <span id="companySelectionStatus" class="status-badge">-</span>
+                </div>
+            </div>
+
+            <button id="editCompanyButton">企業情報を編集</button>
+        </section>
+
+        <section>
+            <h2>次の予定</h2>
+
+            <div class="next-schedule-card">
+                <div>
+                    <span class="detail-label">予定日</span>
+                    <strong id="companyDate">未設定</strong>
+                </div>
+
+                <div>
+                    <span class="detail-label">優先度</span>
+                    <strong id="companyPriority">未設定</strong>
+                </div>
+            </div>
+
+            <p id="companyMemo" class="detail-memo">メモなし</p>
+        </section>
+
+        <section id="editCompanySection" class="hidden">
+            <h2>企業情報を編集</h2>
+
+            <label for="editCompanyName">企業名</label>
+            <input type="text" id="editCompanyName" placeholder="企業名を入力">
+
+            <label for="editCompanyCategory">志望カテゴリ</label>
+            <select id="editCompanyCategory">
+                <option value="本命">本命</option>
+                <option value="目標">目標</option>
+                <option value="有力候補">有力候補</option>
+                <option value="気になる">気になる</option>
+            </select>
+
+            <label for="editCompanySelectionStatus">選考状況</label>
+            <select id="editCompanySelectionStatus">
+                <option value="未応募">未応募</option>
+                <option value="応募予定">応募予定</option>
+                <option value="ES提出済み">ES提出済み</option>
+                <option value="選考中">選考中</option>
+                <option value="最終面接">最終面接</option>
+                <option value="内定">内定</option>
+                <option value="不合格">不合格</option>
+            </select>
+
+            <label for="editCompanyDate">次の予定日</label>
+            <input type="date" id="editCompanyDate">
+
+            <label for="editCompanyPriority">優先度</label>
+            <select id="editCompanyPriority">
+                <option value="5">★★★★★</option>
+                <option value="4">★★★★☆</option>
+                <option value="3">★★★☆☆</option>
+                <option value="2">★★☆☆☆</option>
+                <option value="1">★☆☆☆☆</option>
+            </select>
+
+            <label for="editCompanyMemo">メモ</label>
+            <textarea id="editCompanyMemo" placeholder="企業についてのメモを入力"></textarea>
+
+            <div class="item-buttons">
+                <button id="saveCompanyButton">変更を保存</button>
+                <button id="cancelEditButton">キャンセル</button>
+            </div>
+        </section>
+
+        <section>
+            <h2>企業研究</h2>
+
+            <div class="research-grid">
+                <div class="research-card">
+                    <h3>事業内容</h3>
+                    <p id="researchBusiness">未記入</p>
+                </div>
+
+                <div class="research-card">
+                    <h3>企業の強み</h3>
+                    <p id="researchStrengths">未記入</p>
+                </div>
+
+                <div class="research-card">
+                    <h3>求める人物像</h3>
+                    <p id="researchProfile">未記入</p>
+                </div>
+
+                <div class="research-card">
+                    <h3>自分との接点</h3>
+                    <p id="researchConnection">未記入</p>
+                </div>
+
+                <div class="research-card">
+                    <h3>気になった点</h3>
+                    <p id="researchPoints">未記入</p>
+                </div>
+            </div>
+
+            <button id="editResearchButton">企業研究を編集</button>
+        </section>
+
+        <section id="editResearchSection" class="hidden">
+            <h2>企業研究を編集</h2>
+
+            <label for="editResearchBusiness">事業内容</label>
+            <textarea id="editResearchBusiness" placeholder="主な事業・サービスなど"></textarea>
+
+            <label for="editResearchStrengths">企業の強み</label>
+            <textarea id="editResearchStrengths" placeholder="競合との違い、強みなど"></textarea>
+
+            <label for="editResearchProfile">求める人物像</label>
+            <textarea id="editResearchProfile" placeholder="企業が求めている人物像など"></textarea>
+
+            <label for="editResearchConnection">自分との接点</label>
+            <textarea id="editResearchConnection" placeholder="自分の経験・価値観と企業の接点"></textarea>
+
+            <label for="editResearchPoints">気になった点</label>
+            <textarea id="editResearchPoints" placeholder="疑問点、追加で調べたいことなど"></textarea>
+
+            <div class="item-buttons">
+                <button id="saveResearchButton">企業研究を保存</button>
+                <button id="cancelResearchButton">キャンセル</button>
+            </div>
+        </section>
+
+        <section>
+            <h2>この企業のタスク</h2>
+
+            <div class="company-task-form">
+                <input type="text" id="companyTaskInput" placeholder="例：一次面接の質問を整理する">
+                <input type="date" id="companyTaskDate">
+
+                <select id="companyTaskPriority">
+                    <option value="">優先度なし</option>
+                    <option value="高">高</option>
+                    <option value="中">中</option>
+                    <option value="低">低</option>
+                </select>
+
+                <button id="addCompanyTaskButton">＋ タスクを追加</button>
+            </div>
+
+            <ul id="companyTaskList"></ul>
+            <p id="noCompanyTasks">この企業に紐づいたタスクはありません。</p>
+        </section>
+
+        <section>
+            <h2>この企業のES・文章</h2>
+            <ul id="companyTextList"></ul>
+            <p id="noCompanyTexts">この企業に紐づいたES・文章はありません。</p>
+        </section>
+
+        <section>
+            <h2>面接記録</h2>
+
+            <div class="interview-form">
+                <input type="date" id="interviewDate">
+
+                <select id="interviewStage">
+                    <option value="一次面接">一次面接</option>
+                    <option value="二次面接">二次面接</option>
+                    <option value="三次面接">三次面接</option>
+                    <option value="最終面接">最終面接</option>
+                    <option value="面談">面談</option>
+                    <option value="その他">その他</option>
+                </select>
+
+                <input type="text" id="interviewerInput" placeholder="面接官・担当者">
+                <textarea id="questionsInput" placeholder="聞かれた質問"></textarea>
+                <textarea id="answerNotesInput" placeholder="自分の回答・振り返り"></textarea>
+                <textarea id="impressionInput" placeholder="面接の感想"></textarea>
+                <textarea id="nextActionInput" placeholder="次にやること"></textarea>
+
+                <button id="addInterviewButton">＋ 面接記録を保存</button>
+            </div>
+
+            <ul id="interviewList"></ul>
+            <p id="noInterviews">この企業の面接記録はありません。</p>
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js"></script>
+    <script src="company-detail.js"></script>
+
+</body>
+</html>
