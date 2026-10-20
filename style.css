@@ -1182,3 +1182,74 @@ button:hover {
         padding: 12px;
     }
 }
+
+/* 企業管理フォームのレイアウト */
+body:has(#companyInput) main > section:first-child > label {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+body:has(#companyInput) main > section:first-child > input,
+body:has(#companyInput) main > section:first-child > select,
+body:has(#companyInput) main > section:first-child > textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 10px;
+}
+
+body:has(#companyInput) #companyInput {
+    margin-bottom: 14px;
+}
+
+body:has(#companyInput) #companyPriority {
+    margin-top: 4px;
+}
+
+body:has(#companyInput) #companyMemo {
+    min-height: 110px;
+    margin-top: 14px;
+}
+
+body:has(#companyInput) #addCompanyButton {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 8px;
+    font-weight: 700;
+}
+
+body:has(#companyInput) .company-filter {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+body:has(#companyInput) .company-filter input,
+body:has(#companyInput) .company-filter select {
+    width: 100%;
+    min-width: 0;
+}
+
+@media (max-width: 600px) {
+    body:has(#companyInput) main {
+        margin-top: 16px;
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    body:has(#companyInput) main > section {
+        padding: 18px 14px;
+    }
+
+    body:has(#companyInput) main > section:first-child > label {
+        margin-top: 12px;
+    }
+
+    body:has(#companyInput) .company-filter {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
