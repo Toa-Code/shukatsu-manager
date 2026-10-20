@@ -1253,3 +1253,14 @@ body:has(#companyInput) .company-filter select {
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+@media (max-width: 600px) {
+    body:has(#companyInput) #companyDate {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 12px 8px;
+    }
+}
