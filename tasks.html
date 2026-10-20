@@ -1,60 +1,86 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>今日のタスク - 就活Manager</title>
+    <title>タスク管理 - 就活Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
     <header>
-        <h1>今日のタスク</h1>
-        <p>今日やることを管理します。</p>
+        <h1>タスク管理</h1>
+        <p>今日やることから今後の予定まで、一元管理します。</p>
     </header>
 
     <nav class="main-nav">
-    <div class="nav-inner">
-        <a href="index.html">ホーム</a>
-        <a href="tasks.html" class="active">タスク</a>
-        <a href="companies.html">企業</a>
-        <a href="es.html">ES</a>
-        <a href="internship.html">振り返り</a>
-    </div>
-    </nav> 
+        <div class="nav-inner">
+            <a href="index.html">ホーム</a>
+            <a href="tasks.html" class="active">タスク</a>
+            <a href="companies.html">企業</a>
+            <a href="es.html">ES</a>
+            <a href="internship.html">振り返り</a>
+        </div>
+    </nav>
 
     <a href="index.html">← トップページへ戻る</a>
 
     <main>
-
         <section>
-            <h2>タスクを追加</h2>
+            <h2 id="taskFormTitle">タスクを追加</h2>
 
             <input type="text" id="taskInput" placeholder="タスクを入力">
 
+            <label for="taskDate">期限</label>
             <input type="date" id="taskDate">
 
+            <label for="taskPriority">優先度</label>
             <select id="taskPriority">
                 <option value="高">高</option>
                 <option value="中">中</option>
                 <option value="低">低</option>
             </select>
 
-            <button id="addTaskButton">追加</button>
+            <label for="taskCompany">企業</label>
+            <select id="taskCompany">
+                <option value="">企業を選択（任意）</option>
+            </select>
+
+            <div class="task-form-buttons">
+                <button id="addTaskButton">追加</button>
+                <button id="cancelEditButton" type="button" hidden>編集をキャンセル</button>
+            </div>
         </section>
 
         <section>
             <h2>タスク一覧</h2>
 
-            <ul id="taskList"></ul>
-        </section>
+            <div class="task-controls">
+                <label for="taskSort">並び替え</label>
+                <select id="taskSort">
+                    <option value="date">期限が近い順</option>
+                    <option value="priority">優先度が高い順</option>
+                    <option value="company">企業名順</option>
+                    <option value="created">新しい順</option>
+                </select>
+            </div>
 
+            <p id="taskCount" aria-live="polite"></p>
+
+            <div id="taskGroups"></div>
+            <ul id="taskList" hidden></ul>
+        </section>
     </main>
 
+    <div id="taskNotice" class="task-notice" role="status" aria-live="polite" hidden>
+        <span id="taskNoticeText"></span>
+        <button id="undoDeleteButton" type="button" hidden>取り消す</button>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-<script src="auth.js"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

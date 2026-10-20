@@ -3,58 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ES・文章 - 就活Manager</title>
+    <title>ES管理 - 就活Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
     <header>
-        <h1>ES・文章</h1>
-        <p>ESや自己分析を保存します。</p>
+        <h1>ES管理</h1>
+        <p>企業ごとの設問管理と、使い回せるES素材をまとめて管理します。</p>
     </header>
 
     <nav class="main-nav">
-    <div class="nav-inner">
-        <a href="index.html">ホーム</a>
-        <a href="tasks.html">タスク</a>
-        <a href="companies.html">企業</a>
-        <a href="es.html" class="active">ES</a>
-        <a href="internship.html">振り返り</a>
-    </div>
-</nav>
+        <div class="nav-inner">
+            <a href="index.html">ホーム</a>
+            <a href="tasks.html">タスク</a>
+            <a href="companies.html">企業</a>
+            <a href="es.html" class="active">ES</a>
+            <a href="internship.html">振り返り</a>
+        </div>
+    </nav>
 
     <a href="index.html">← トップページへ戻る</a>
 
     <main>
-
         <section>
-            <h2>文章を追加</h2>
-
-            <input type="text" id="textTitle" placeholder="タイトルを入力">
-
-<label for="textCompany">企業</label>
-<select id="textCompany">
-    <option value="">企業を指定しない</option>
-</select>
-
-<textarea id="textContent" placeholder="文章を入力"></textarea>
-
-<div id="textCount">0文字</div>
-
-            <button id="addTextButton">保存</button>
+            <h2>ESの進捗</h2>
+            <div id="esDashboard">
+                <p>データを読み込んでいます。</p>
+            </div>
         </section>
 
         <section>
-            <h2>保存した文章</h2>
-
-            <ul id="textList"></ul>
+            <div class="item-buttons">
+                <button type="button" id="showApplicationsButton">企業別ES</button>
+                <button type="button" id="showMaterialsButton">ES素材ライブラリ</button>
+            </div>
         </section>
 
+        <div id="applicationsView">
+            <section>
+                <h2 id="applicationFormHeading">選考を追加</h2>
+
+                <label for="applicationTitle">選考名</label>
+                <input type="text" id="applicationTitle"
+                    placeholder="例：夏季インターンシップ">
+
+                <label for="applicationCompany">企業</label>
+                <select id="applicationCompany">
+                    <option value="">企業を指定しない</option>
+                </select>
+
+                <label for="applicationType">選考区分</label>
+                <select id="applicationType">
+                    <option value="インターン">インターン</option>
+                    <option value="本選考">本選考</option>
+                    <option value="説明会">説明会</option>
+                    <option value="その他">その他</option>
+                </select>
+
+                <label for="applicationDeadline">提出期限</label>
+                <input type="date" id="applicationDeadline">
+
+                <label for="applicationStatus">選考の進捗</label>
+                <select id="applicationStatus">
+                    <option value="準備中">準備中</option>
+                    <option value="作成中">作成中</option>
+                    <option value="提出済み">提出済み</option>
+                    <option value="完了">完了</option>
+                </select>
+
+                <label for="applicationMemo">メモ</label>
+                <textarea id="applicationMemo"
+                    placeholder="選考全体についてのメモ"></textarea>
+
+                <div class="item-buttons">
+                    <button type="button" id="saveApplicationButton">選考を登録</button>
+                    <button type="button" id="cancelApplicationEditButton" hidden>編集をキャンセル</button>
+                </div>
+            </section>
+
+            <section>
+                <h2>登録した選考</h2>
+
+                <input type="search" id="applicationSearch"
+                    placeholder="選考名・企業名を検索">
+
+                <select id="applicationFilterType">
+                    <option value="すべて">すべての選考区分</option>
+                    <option value="インターン">インターン</option>
+                    <option value="本選考">本選考</option>
+                    <option value="説明会">説明会</option>
+                    <option value="その他">その他</option>
+                </select>
+
+                <select id="applicationFilterStatus">
+                    <option value="すべて">すべての進捗</option>
+                    <option value="準備中">準備中</option>
+                    <option value="作成中">作成中</option>
+                    <option value="提出済み">提出済み</option>
+                    <option value="完了">完了</option>
+                </select>
+
+                <ul id="applicationList"></ul>
+            </section>
+
+            <section id="questionsSection">
+                <h2 id="questionFormHeading">設問を追加</h2>
+                <p id="selectedApplicationMessage">先に選考を選択してください。</p>
+
+                <label for="questionApplication">対象の選考</label>
+                <select id="questionApplication">
+                    <option value="">選考を選択してください</option>
+                </select>
+
+                <label for="questionPrompt">設問文</label>
+                <textarea id="questionPrompt"
+                    placeholder="例：学生時代に最も力を入れたことを教えてください。"></textarea>
+
+                <label for="questionCategory">設問カテゴリ</label>
+                <select id="questionCategory">
+                    <option value="ガクチカ">ガクチカ</option>
+                    <option value="志望動機">志望動機</option>
+                    <option value="自己PR">自己PR</option>
+                    <option value="強み・弱み">強み・弱み</option>
+                    <option value="挫折経験">挫折経験</option>
+                    <option value="将来像">将来像</option>
+                    <option value="学生生活">学生生活</option>
+                    <option value="インターンで学びたいこと">インターンで学びたいこと</option>
+                    <option value="その他">その他</option>
+                </select>
+
+                <label for="questionCharLimit">文字数制限</label>
+                <input type="number" id="questionCharLimit"
+                    min="1" placeholder="例：400">
+
+                <label for="questionDeadline">設問の提出期限（任意）</label>
+                <input type="date" id="questionDeadline">
+
+                <label for="questionStatus">回答の進捗</label>
+                <select id="questionStatus">
+                    <option value="未着手">未着手</option>
+                    <option value="作成中">作成中</option>
+                    <option value="完成">完成</option>
+                    <option value="提出済み">提出済み</option>
+                </select>
+
+                <label for="questionSourceText">参考にするES素材</label>
+                <select id="questionSourceText">
+                    <option value="">素材を選択してください</option>
+                </select>
+                <button type="button" id="copyMaterialButton">素材を回答欄にコピー</button>
+
+                <label for="questionAnswer">回答本文</label>
+                <textarea id="questionAnswer"
+                    placeholder="設問に対する回答を入力"></textarea>
+                <p id="questionTextCount">0文字</p>
+
+                <label for="questionMemo">メモ</label>
+                <textarea id="questionMemo"
+                    placeholder="改善点や確認事項"></textarea>
+
+                <div class="item-buttons">
+                    <button type="button" id="saveQuestionButton">設問を登録</button>
+                    <button type="button" id="cancelQuestionEditButton" hidden>編集をキャンセル</button>
+                </div>
+            </section>
+
+            <section>
+                <h2>設問一覧</h2>
+
+                <select id="questionFilterApplication">
+                    <option value="すべて">すべての選考</option>
+                </select>
+
+                <select id="questionFilterCategory">
+                    <option value="すべて">すべてのカテゴリ</option>
+                    <option value="ガクチカ">ガクチカ</option>
+                    <option value="志望動機">志望動機</option>
+                    <option value="自己PR">自己PR</option>
+                    <option value="強み・弱み">強み・弱み</option>
+                    <option value="挫折経験">挫折経験</option>
+                    <option value="将来像">将来像</option>
+                    <option value="学生生活">学生生活</option>
+                    <option value="インターンで学びたいこと">インターンで学びたいこと</option>
+                    <option value="その他">その他</option>
+                </select>
+
+                <select id="questionFilterStatus">
+                    <option value="すべて">すべての進捗</option>
+                    <option value="未着手">未着手</option>
+                    <option value="作成中">作成中</option>
+                    <option value="完成">完成</option>
+                    <option value="提出済み">提出済み</option>
+                </select>
+
+                <input type="search" id="questionSearch"
+                    placeholder="設問文・回答・企業名を検索">
+
+                <ul id="questionList"></ul>
+            </section>
+        </div>
+
+        <div id="materialsView" hidden>
+            <section>
+                <h2 id="materialFormHeading">ES素材を追加</h2>
+
+                <label for="materialTitle">タイトル</label>
+                <input type="text" id="materialTitle"
+                    placeholder="例：部活動での課題解決経験">
+
+                <label for="materialCategory">カテゴリ</label>
+                <select id="materialCategory">
+                    <option value="ガクチカ">ガクチカ</option>
+                    <option value="志望動機">志望動機</option>
+                    <option value="自己PR">自己PR</option>
+                    <option value="強み・弱み">強み・弱み</option>
+                    <option value="挫折経験">挫折経験</option>
+                    <option value="将来像">将来像</option>
+                    <option value="学生生活">学生生活</option>
+                    <option value="その他">その他</option>
+                </select>
+
+                <label for="materialTags">タグ（カンマ区切り）</label>
+                <input type="text" id="materialTags"
+                    placeholder="例：部活動, リーダーシップ, 課題解決">
+
+                <label for="materialCompany">関連企業（任意）</label>
+                <select id="materialCompany">
+                    <option value="">企業を指定しない</option>
+                </select>
+
+                <label for="materialContent">文章</label>
+                <textarea id="materialContent"
+                    placeholder="繰り返し活用する文章や経験を保存"></textarea>
+                <p id="materialTextCount">0文字</p>
+
+                <div class="item-buttons">
+                    <button type="button" id="saveMaterialButton">素材を保存</button>
+                    <button type="button" id="cancelMaterialEditButton" hidden>編集をキャンセル</button>
+                </div>
+            </section>
+
+            <section>
+                <h2>保存したES素材</h2>
+
+                <input type="search" id="materialSearch"
+                    placeholder="タイトル・本文・タグを検索">
+
+                <select id="materialFilterCategory">
+                    <option value="すべて">すべてのカテゴリ</option>
+                    <option value="ガクチカ">ガクチカ</option>
+                    <option value="志望動機">志望動機</option>
+                    <option value="自己PR">自己PR</option>
+                    <option value="強み・弱み">強み・弱み</option>
+                    <option value="挫折経験">挫折経験</option>
+                    <option value="将来像">将来像</option>
+                    <option value="学生生活">学生生活</option>
+                    <option value="その他">その他</option>
+                </select>
+
+                <ul id="materialList"></ul>
+            </section>
+        </div>
     </main>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-<script src="auth.js"></script>
-<script src="es.js"></script>
+    <script src="supabase.js"></script>
+    <script src="auth.js"></script>
+    <script src="es.js"></script>
 </body>
 </html>

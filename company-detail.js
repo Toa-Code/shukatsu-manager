@@ -174,8 +174,10 @@ async function loadCompanyTexts(userId, companyId) {
         const li = document.createElement("li");
         li.classList.add("company-linked-item");
 
-        const title = document.createElement("strong");
-        title.textContent = text.title;
+        const title = document.createElement("a");
+title.textContent = text.title;
+title.href = `es.html?id=${encodeURIComponent(text.id)}`;
+title.classList.add("company-text-link");
 
         const content = document.createElement("p");
         content.textContent = text.content;
